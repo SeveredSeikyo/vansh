@@ -1,101 +1,127 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { saveUserDetails, getUserDetails } from "@/utils/db";
+import { PiStudentFill, PiChalkboardTeacherFill } from "react-icons/pi";
+import { CgProfile } from "react-icons/cg";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [showStudent, setShowStudent]=useState(false)
+  const [showFaculty, setShowFaculty]=useState(false)
+  const [showGuest, setShowGuest]=useState(false)
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    name: "",
+    rollNumber: "",
+    branch: "",
+    year: "",
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      getUserDetails().then((data) => {
+        if (data) {
+          router.replace("/dashboard"); // 🚀 Redirect immediately
+        } else {
+          setIsLoading(false); // Show form only if data is missing
+        }
+      });
+    }
+  }, [router]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onChangeStudent=()=>{
+    setShowStudent((prev)=>!prev)
+  }
+
+  const onChangeFaculty=()=>{
+    setShowFaculty((prev)=>!prev)
+  }
+
+  const onChangeGuest=()=>{
+    setShowGuest((prev)=>!prev)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await saveUserDetails({ id: 1, ...formData });
+    router.push("/dashboard"); // Redirect after saving user data
+  };
+
+  // Show loading indicator while checking user data
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <main className="flex flex-col justify-center flex-1 pt-16 pb-16 px-4 max-w-lg mx-auto">
+        {!showStudent&&!showFaculty&&!showGuest&&(
+          <div className="flex flex-col gap-3 justify-center items-center">
+            <button type="button" className="bg-gray-300 hover:bg-gray-400 hover:text-white p-2 w-30" onClick={onChangeStudent}>
+              <span className="flex justify-center items-center gap-1">
+                <PiStudentFill/>
+                Student
+              </span>
+            </button>
+            <button type="button" className="bg-gray-300 hover:bg-gray-400 hover:text-white p-2 w-30" onClick={onChangeFaculty}>
+              <span className="flex justify-center items-center gap-1">
+                <PiChalkboardTeacherFill/>
+                Faculty
+              </span>
+            </button>
+            <button type="button" className="bg-gray-300 hover:bg-gray-400 hover:text-white p-2 w-30" onClick={onChangeGuest}>
+              <span className="flex justify-center items-center gap-1">
+                <CgProfile/>
+                Guest
+              </span>
+            </button>
+          </div>
+        )}
+        {showStudent&&(
+          <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Student Details</h2>
+            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full border p-2 rounded-lg mb-3" required />
+            <input type="text" name="rollNumber" value={formData.rollNumber} onChange={handleChange} placeholder="Roll Number" className="w-full border p-2 rounded-lg mb-3" required />
+            <input type="text" name="branch" value={formData.branch} onChange={handleChange} placeholder="Branch" className="w-full border p-2 rounded-lg mb-3" required />
+            <select name="year" value={formData.year} onChange={handleChange} className="w-full border p-2 rounded-lg mb-3">
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+            <div className="flex justify-between items-center">
+              <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 ml-2 mr-2">Submit</button>
+              <button type="submit" className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-blue-700 ml-2 mr-2" onClick={onChangeStudent}>Back</button>
+            </div>
+          </form>
+        )}
+        {showFaculty&&(
+          <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Faculty Details</h2>
+            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full border p-2 rounded-lg mb-3" required />
+            <input type="text" name="branch" value={formData.branch} onChange={handleChange} placeholder="Branch" className="w-full border p-2 rounded-lg mb-3" required />
+            <div className="flex justify-between items-center">
+              <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 ml-2 mr-2">Submit</button>
+              <button type="submit" className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-blue-700 ml-2 mr-2" onClick={onChangeFaculty}>Back</button>
+            </div>
+          </form>
+        )}
+        {showGuest&&(
+          <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4">Guest Details</h2>
+            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full border p-2 rounded-lg mb-3" required />
+            <div className="flex justify-between items-center">
+              <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 ml-2 mr-2">Submit</button>
+              <button type="submit" className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-blue-700 ml-2 mr-2" onClick={onChangeGuest}>Back</button>
+            </div>
+          </form>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
