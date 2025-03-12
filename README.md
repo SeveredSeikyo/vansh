@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vansh App 🎭📍  
 
-## Getting Started
+**Vansh App** is a campus event guide that provides event details, an offline map with custom markers, and a **Lost and Found** section using **Bluetooth Low Energy (BLE)**. Designed for **offline functionality**, it enhances the festival experience with **interactive schedules, AR maps, and gamification**.  
 
-First, run the development server:
+---  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features 🚀  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Core Features  
+✅ **Offline Map** – View event locations, help desks, and stalls with custom markers.  
+✅ **Events Section** – Browse event details and schedules.  
+✅ **Lost and Found** – BLE-based system to update lost and found items.  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### New Enhancements  
+✨ **Interactive Event Schedule** – Personalized schedules and reminders.  
+✨ **Offline Message Boards** – Local bulletin for notices and info-sharing (BLE sync).  
+✨ **Gamification & Rewards** – Earn points for attending events and redeem rewards.  
+✨ **Augmented Reality (AR) Map** – Virtual signs and overlays for navigation.  
+✨ **Emergency Alerts** – BLE-based urgent notifications to nearby users.  
+✨ **User-generated Content** – Submit photos, reviews, and feedback (BLE sync).  
+✨ **Offline Search & Filters** – Find events easily with advanced search.  
+✨ **Interactive Campus Tour** – Offline guide with audio and facts.  
+✨ **Collaborative Tasks & Challenges** – Team-based challenges updated via BLE.  
+✨ **Lost Item Claims** – Instant notifications for lost items.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---  
 
-## Learn More
+## Tech Stack 🛠  
 
-To learn more about Next.js, take a look at the following resources:
+- **Frontend:** Next.js (TypeScript)  
+- **Mobile Framework:** Capacitor  
+- **Storage:** Local Storage / IndexedDB  
+- **Offline Sync:** BLE (Bluetooth Low Energy)  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Installation & Setup 🔧  
 
-## Deploy on Vercel
+### Prerequisites  
+Ensure you have **Node.js** and **Capacitor CLI** installed.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Steps  
+1. **Clone the repository:**  
+   ```sh
+   git clone https://github.com/yourusername/vansh-app.git
+   cd vansh-app
+   ```  
+2. **Install dependencies:**  
+   ```sh
+   npm install
+   ```  
+3. **Run the development server:**  
+   ```sh
+   npm run dev
+   ```  
+4. **Build for mobile (Capacitor):**  
+   ```sh
+   npm run build
+   npx cap sync
+   ```  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---  
+
+## Contributing 🤝  
+
+Contributions are welcome! Fork the repo, create a feature branch, and submit a pull request.  
+
+---  
+
+## License 📜  
+
+This project is licensed under the **MIT License**.  
