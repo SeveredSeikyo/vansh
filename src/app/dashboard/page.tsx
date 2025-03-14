@@ -40,13 +40,9 @@ export default function Home() {
     const [searchQuery, setSearchQuery] = useState("");
     const [isDayOneDown, setIsDayOneDown]=useState(true);
     const [isDayTwoDown, setIsDayTwoDown]=useState(true);
-    const [isFiltered,setIsFiltered]=useState(false);
     const [showFilters,setShowFilters]=useState(false);
-    
-    //Function to set IsFiltered to True
-    const handleSetFilters=()=>{
-        setIsFiltered(prev=>!prev)
-    }
+    const [isDayOneChecked, setIsDayOneChecked]=useState(true);
+    const [isDayTwoChecked, setIsDayTwoChecked]=useState(true);
 
     // Function to filter events based on search query and category
     const filterEvents = (events: Event[]) => {
@@ -81,10 +77,12 @@ export default function Home() {
 
     const handleDayOneDown=()=>{
         setIsDayOneDown((prev)=>!prev);
+        setIsDayOneChecked(prev=>!prev);
         //setIsDayTwoDown(false)
     }
     const handleDayTwoDown=()=>{
         setIsDayTwoDown((prev)=>!prev);
+        setIsDayTwoChecked(prev=>!prev);
         //setIsDayOneDown(false)
     }
 
@@ -147,22 +145,26 @@ export default function Home() {
                 </div> */}
 
                 {/* display filter icon */}
-                <div className="flex justify-end px-10 py-3">
-                    <div className="relative">
-                        {isFiltered?<TbFilterFilled fontSize={24}/>:<TbFilterOff fontSize={24}/>}
+                <div className="relative flex justify-end px-10 py-3" onMouseLeave={handleShowFilters}>
+                    <div onMouseEnter={handleShowFilters}>
+                        {isDayOneDown||isDayTwoDown ? <TbFilterFilled fontSize={24}/> : <TbFilterOff fontSize={24}/>}
                     </div>
-                    {!showFilters?
-                    <div className="absolute mt-8 bg-gray-200 pr-5 pl-2 py-4 rounded-lg text-sm">
-                        <div className="gap-1 flex">
-                            <input type="checkbox" id="dayone" className="w-3"/>
-                            <label htmlFor="dayone">Day One</label>
+                    {showFilters && (
+                        <div className="absolute mt-8 bg-gray-200 pr-5 pl-2 py-4 rounded-lg text-xs">
+                            <div className="flex items-center gap-1">
+                                <input type="checkbox" id="dayone" className="w-3" checked={isDayOneChecked} onChange={handleDayOneDown}/>
+                                <label htmlFor="dayone">Day One</label>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <input type="checkbox" id="daytwo" className="w-3" checked={isDayTwoChecked} onChange={handleDayTwoDown}/>
+                                <label htmlFor="daytwo">Day Two</label>
+                            </div>
                         </div>
-                        <div className="flex gap-1">
-                            <input type="checkbox" id="daytwo" className="w-3"/>
-                            <label htmlFor="daytwo">Day Two</label>
-                        </div>
-                    </div>:
-                    null}
+                    )}
+                </div>
+                <div>
+                {isDayOneDown?<EventsList eventslist={filteredList} />:null}
+                {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
                 </div>
             </main>
             <Footer />
