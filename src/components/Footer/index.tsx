@@ -18,7 +18,7 @@ const Footer = () => {
                     {pathName==="/dashboard/"?<BsCalendar2EventFill fontSize={24} className="text-gray-500"/>:<BsCalendar2Event fontSize={24} className="text-gray-500" />}
                     <p className="text-xs font-medium">Events</p>
                 </Link>
-                <Link href="/dashboard" className="flex flex-col items-center hover:text-black transition">
+                <Link href="/stalls" className="flex flex-col items-center hover:text-black transition">
                     {pathName==="/stalls/"?<IoStorefront fontSize={24} className="text-gray-500"/>:<IoStorefrontOutline fontSize={24} className="text-gray-500" />}
                     <p className="text-xs font-medium">Stalls</p>
                 </Link>
