@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState,useCallback, useRef } from "react";
 
 type MapItemProps = {
     isSatView: boolean;
@@ -45,63 +45,55 @@ const MapItem = ({ isSatView, isHelpDes, setIsHelpDes, isPortrait }: MapItemProp
     ];
 
     // Function to scale coordinates based on image dimensions
-    useEffect(() => {
-        const updateCoords = () => {
-            if (imgRef.current) {
-                const imgWidth = imgRef.current.width;
-                const imgHeight = imgRef.current.height;
-
-                if (isSatView) {
-                    const newCoords = satOriginalCoords.map((coord) =>
-                        coord.map((value, index) =>
+    const updateCoords = useCallback(() => {
+        if (imgRef.current) {
+            const imgWidth = imgRef.current.width;
+            const imgHeight = imgRef.current.height;
+    
+            const scaleCoords = (originalCoords: number[][], originalSize: { width: number; height: number }) =>
+                originalCoords.map((coord) =>
+                    coord
+                        .map((value, index) =>
                             index % 2 === 0
-                                ? Math.round((value * imgWidth) / satOriginalSize.width)
-                                : Math.round((value * imgHeight) / satOriginalSize.height)
-                        ).join(",")
-                    );
-                    setSatScaledCoords(newCoords);
-                } else {
-                    const newCoords = customeOriginalCoords.map((coord) =>
-                        coord.map((value, index) =>
-                            index % 2 === 0
-                                ? Math.round((value * imgWidth) / customeOriginalSize.width)
-                                : Math.round((value * imgHeight) / customeOriginalSize.height)
-                        ).join(",")
-                    );
-                    setCustomScaledCoords(newCoords);
-                }
+                                ? Math.round((value * imgWidth) / originalSize.width)
+                                : Math.round((value * imgHeight) / originalSize.height)
+                        )
+                        .join(",")
+                );
+    
+            if (isSatView) {
+                setSatScaledCoords(scaleCoords(satOriginalCoords, satOriginalSize));
+            } else {
+                setCustomScaledCoords(scaleCoords(customeOriginalCoords, customeOriginalSize));
             }
-        };
+        }
+    }, [isSatView]);    
 
+    useEffect(() => {
         window.addEventListener("resize", updateCoords);
         updateCoords(); // Call on mount
-
+    
         return () => window.removeEventListener("resize", updateCoords);
-    }, [isSatView]); // Recalculate when the view changes
+    }, [updateCoords]);
 
     // Function to handle click on the map area
     const targetFunction = (event: React.MouseEvent, index: number, viewType: string) => {
-        // Find the corresponding help desk entry based on index and viewType
-        setIsHelpDes(true); // Ensure help desk details are visible
-        const helpDesk = helpDeskList.find(
-            (desk) => desk.index === index && desk.type === viewType
-        );
-
-        // If a corresponding help desk is found, update the state to display its description
-        if (helpDesk) {
-            setSelectedHelpDesk(helpDesk.description);
-        }
-    };
+        event.preventDefault();
+        setIsHelpDes(true);
+        const helpDesk = helpDeskList.find((desk) => desk.index === index && desk.type === viewType);
+        if (helpDesk) setSelectedHelpDesk(helpDesk.description);
+    };    
 
     return (
         <div className="max-h-screen">
             <img
                 ref={imgRef}
-                src={isSatView ? "/vansh-map-satview.png" : "/vansh-map-customview.png"}
+                src={isSatView? "/vansh-map-satview.png" : "/vansh-map-customview.png"}
                 alt={isSatView ? "Satellite View" : "Custom View"}
                 className="w-full"
                 useMap={isSatView ? "#vansh-satview" : "#vansh-customview"}
             />
+
             <map name={isSatView ? "vansh-satview" : "vansh-customview"}>
                 {(isSatView ? satScaledCoords : customScaledCoords).map((coord, index) => (
                     <area
