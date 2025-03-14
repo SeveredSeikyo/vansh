@@ -167,10 +167,10 @@ export default function Home() {
                     {isDayOneDown?<EventsList eventslist={filteredList} />:null}
                     {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
                 </div>:
-                <div className="flex-col justify-center items-center text-center px-10 mx-auto">
-                    <img src="/undraw_void.svg" alt="events_not_found" className="w-75 mx-auto mb-10"/>
+                <div className="flex flex-col justify-center items-center text-center px-10 flex-grow">
+                    <img src="/undraw_void.svg" alt="events_not_found" className="w-75 mx-auto mb-10" />
                     <p>No events are available for this period. Adjust your filters or check another date range.</p>
-                </div>
+                </div>            
                 }
             </main>
             <Footer />
