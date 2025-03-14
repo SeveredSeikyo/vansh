@@ -12,7 +12,7 @@ const Footer = () => {
     const pathName=usePathname();
     console.log(pathName)
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-gradient-to-t from-gray-100 to-white shadow-lg py-3 pb-5">
+        <div className="fixed bottom-0 left-0 w-full bg-gradient-to-t from-gray-100 to-white shadow-xl py-3 pb-5">
             <div className="flex justify-around items-center text-gray-700">
                 <Link href="/dashboard" className="flex flex-col items-center hover:text-black transition">
                     {pathName==="/dashboard/"?<BsCalendar2EventFill fontSize={24} className="text-gray-500"/>:<BsCalendar2Event fontSize={24} className="text-gray-500" />}

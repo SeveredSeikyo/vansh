@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 type MapItemProps = {
     isSatView: boolean;
     isHelpDes: boolean;
+    isPortrait: boolean;
     setIsHelpDes: React.Dispatch<React.SetStateAction<boolean>>; // Function to reset help desk state
 };
 
@@ -23,12 +24,12 @@ const helpDeskList = [
     { id: 6, index: 3, type: "customview", description: "Help Desk 4" },
 ];
 
-const MapItem = ({ isSatView, isHelpDes, setIsHelpDes }: MapItemProps) => {
+const MapItem = ({ isSatView, isHelpDes, setIsHelpDes, isPortrait }: MapItemProps) => {
     const [customScaledCoords, setCustomScaledCoords] = useState<string[]>([]);
     const [satScaledCoords, setSatScaledCoords] = useState<string[]>([]);
     const [selectedHelpDesk, setSelectedHelpDesk] = useState<string>(""); // State to store the selected help desk description
     const imgRef = useRef<HTMLImageElement | null>(null);
-
+    console.log(isPortrait);
     // Coordinates for each view
     const customeOriginalCoords = [
         [488, 443, 445, 379], // Area 1
