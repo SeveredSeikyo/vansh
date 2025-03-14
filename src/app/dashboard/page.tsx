@@ -99,6 +99,10 @@ export default function Home() {
         filteredList=filterEvents(daytwoList);
     }
 
+    if (isDayOneDown&&isDayTwoDown){
+        filteredList=filterEvents(events);
+    }
+
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
@@ -164,8 +168,13 @@ export default function Home() {
                 </div>
                 {isDayOneDown||isDayTwoDown?
                 <div>
-                    {isDayOneDown?<EventsList eventslist={filteredList} />:null}
-                    {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
+                    {isDayOneDown&&isDayTwoDown?
+                    <EventsList eventslist={filteredList} />:
+                    <>
+                        {isDayOneDown?<EventsList eventslist={filteredList} />:null}
+                        {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
+                    </>
+                    }
                 </div>:
                 <div className="flex flex-col justify-center items-center text-center px-10 flex-grow">
                     <img src="/undraw_void.svg" alt="events_not_found" className="w-75 mx-auto mb-10" />
