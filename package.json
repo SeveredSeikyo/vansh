@@ -15,6 +15,7 @@
     "@capacitor/cli": "^7.0.1",
     "@capacitor/core": "^7.0.1",
     "@capacitor/ios": "^7.0.1",
+    "@capacitor/screen-orientation": "^7.0.0",
     "@hugeicons/core-free-icons": "^1.0.13",
     "@hugeicons/react": "^1.0.4",
     "@next/font": "^14.2.15",
