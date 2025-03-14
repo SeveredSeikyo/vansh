@@ -6,9 +6,10 @@ import EventsList from "@/components/EventsList";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { FaSearch } from "react-icons/fa";
-import {HiOutlineCalendarDays} from "react-icons/hi2";
-import {BsCalendarDay} from "react-icons/bs";
-import {FaAngleDown, FaAngleUp} from "react-icons/fa";
+import { TbFilterOff, TbFilterFilled } from "react-icons/tb";
+// import {HiOutlineCalendarDays} from "react-icons/hi2";
+// import {BsCalendarDay} from "react-icons/bs";
+// import {FaAngleDown, FaAngleUp} from "react-icons/fa";
 
 // Define the type for an event
 type Event = {
@@ -38,7 +39,14 @@ export default function Home() {
     const [currentCategory, setCurrentCategory] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [isDayOneDown, setIsDayOneDown]=useState(true);
-    const [isDayTwoDown, setIsDayTwoDown]=useState(true)
+    const [isDayTwoDown, setIsDayTwoDown]=useState(true);
+    const [isFiltered,setIsFiltered]=useState(false);
+    const [showFilters,setShowFilters]=useState(false);
+    
+    //Function to set IsFiltered to True
+    const handleSetFilters=()=>{
+        setIsFiltered(prev=>!prev)
+    }
 
     // Function to filter events based on search query and category
     const filterEvents = (events: Event[]) => {
@@ -65,6 +73,11 @@ export default function Home() {
         setCurrentCategory("");
         setSearchQuery("");  // Clear search query as well
     };
+
+    //Set show filters to false
+    const handleShowFilters=()=>{
+        setShowFilters(prev=>!prev)
+    }
 
     const handleDayOneDown=()=>{
         setIsDayOneDown((prev)=>!prev);
@@ -110,7 +123,7 @@ export default function Home() {
                 {isDayOneDown||isDayTwoDown?<Categories onCategorySelect={handleCategorySelect} currentCategory={currentCategory} clearSelection={clearSelection}/>:null}
                 
                 {/* Display filtered events */}
-                <div className="pt-2 pl-4 pr-4">
+                {/* <div className="pt-2 pl-4 pr-4">
                     <div>
                         <button onClick={handleDayOneDown} className="bg-gray-400 mt-1 hover:bg-gray-200 flex justify-between p-3 items-center w-full rounded-lg">
                             <div className="flex items-center gap-1">
@@ -131,6 +144,25 @@ export default function Home() {
                         </button>
                         {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
                     </div>
+                </div> */}
+
+                {/* display filter icon */}
+                <div className="flex justify-end px-10 py-3">
+                    <div className="relative">
+                        {isFiltered?<TbFilterFilled fontSize={24}/>:<TbFilterOff fontSize={24}/>}
+                    </div>
+                    {!showFilters?
+                    <div className="absolute mt-8 bg-gray-200 pr-5 pl-2 py-4 rounded-lg text-sm">
+                        <div className="gap-1 flex">
+                            <input type="checkbox" id="dayone" className="w-3"/>
+                            <label htmlFor="dayone">Day One</label>
+                        </div>
+                        <div className="flex gap-1">
+                            <input type="checkbox" id="daytwo" className="w-3"/>
+                            <label htmlFor="daytwo">Day Two</label>
+                        </div>
+                    </div>:
+                    null}
                 </div>
             </main>
             <Footer />
