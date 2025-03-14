@@ -151,21 +151,27 @@ export default function Home() {
                     </div>
                     {showFilters && (
                         <div className="absolute mt-8 bg-gray-200 pr-5 pl-2 py-4 rounded-lg text-xs">
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-1 mb-1">
                                 <input type="checkbox" id="dayone" className="w-3" checked={isDayOneChecked} onChange={handleDayOneDown}/>
-                                <label htmlFor="dayone">Day One</label>
+                                <label htmlFor="dayone">Thu, 20 Mar</label>
                             </div>
                             <div className="flex items-center gap-1">
                                 <input type="checkbox" id="daytwo" className="w-3" checked={isDayTwoChecked} onChange={handleDayTwoDown}/>
-                                <label htmlFor="daytwo">Day Two</label>
+                                <label htmlFor="daytwo">Fri, 21 Mar</label>
                             </div>
                         </div>
                     )}
                 </div>
+                {isDayOneDown||isDayTwoDown?
                 <div>
-                {isDayOneDown?<EventsList eventslist={filteredList} />:null}
-                {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
+                    {isDayOneDown?<EventsList eventslist={filteredList} />:null}
+                    {isDayTwoDown?<EventsList eventslist={filteredList} />:null}
+                </div>:
+                <div className="flex-col justify-center items-center text-center px-10 mx-auto">
+                    <img src="/undraw_void.svg" alt="events_not_found" className="w-75 mx-auto mb-10"/>
+                    <p>No events are available for this period. Adjust your filters or check another date range.</p>
                 </div>
+                }
             </main>
             <Footer />
         </div>
