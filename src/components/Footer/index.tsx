@@ -2,11 +2,9 @@
 
 import {BsCalendar2Event, BsCalendar2EventFill} from "react-icons/bs";
 import { FaRegMap,FaMapMarkedAlt } from "react-icons/fa";
-import { MdPersonSearch } from "react-icons/md";
-import { HugeiconsIcon } from '@hugeicons/react';
-import {Store02Icon} from '@hugeicons/core-free-icons';
+import { MdPersonSearch, MdOutlinePersonSearch } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
-import {IoPersonCircleSharp} from "react-icons/io5"
+import {IoPersonCircleSharp, IoStorefront, IoStorefrontOutline} from "react-icons/io5"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,7 +19,7 @@ const Footer = () => {
                     <p className="text-xs font-medium">Events</p>
                 </Link>
                 <Link href="/dashboard" className="flex flex-col items-center hover:text-black transition">
-                    {pathName==="/dashboard/"?<HugeiconsIcon icon={Store02Icon} color="#000000"/>:<HugeiconsIcon icon={Store02Icon} />}
+                    {pathName==="/stalls/"?<IoStorefront fontSize={24} className="text-gray-500"/>:<IoStorefrontOutline fontSize={24} className="text-gray-500" />}
                     <p className="text-xs font-medium">Stalls</p>
                 </Link>
                 <Link href="/map" className="flex flex-col items-center hover:text-black transition">
@@ -29,7 +27,7 @@ const Footer = () => {
                     <p className="text-xs font-medium">Map</p>
                 </Link>
                 <Link href="/lost" className="flex flex-col items-center hover:text-black transition">
-                    <MdPersonSearch fontSize={24} className="text-gray-500" />
+                    {pathName==="/lost/"?<MdPersonSearch fontSize={24} className="text-gray-500" />:<MdOutlinePersonSearch fontSize={24} className="text-gray-500"/>}
                     <p className="text-xs font-medium">Lost & Found</p>
                 </Link>
                 <Link href="/profile" className="flex flex-col items-center hover:text-black transition">
