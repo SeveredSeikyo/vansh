@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, useState,useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type MapItemProps = {
     isSatView: boolean;
     isHelpDes: boolean;
-    isPortrait: boolean;
     setIsHelpDes: React.Dispatch<React.SetStateAction<boolean>>; // Function to reset help desk state
 };
 
@@ -24,12 +23,12 @@ const helpDeskList = [
     { id: 6, index: 3, type: "customview", description: "Help Desk 4" },
 ];
 
-const MapItem = ({ isSatView, isHelpDes, setIsHelpDes, isPortrait }: MapItemProps) => {
+const MapItem = ({ isSatView, isHelpDes, setIsHelpDes }: MapItemProps) => {
     const [customScaledCoords, setCustomScaledCoords] = useState<string[]>([]);
     const [satScaledCoords, setSatScaledCoords] = useState<string[]>([]);
     const [selectedHelpDesk, setSelectedHelpDesk] = useState<string>(""); // State to store the selected help desk description
     const imgRef = useRef<HTMLImageElement | null>(null);
-    console.log(isPortrait);
+
     // Coordinates for each view
     const customeOriginalCoords = [
         [488, 443, 445, 379], // Area 1
@@ -45,55 +44,63 @@ const MapItem = ({ isSatView, isHelpDes, setIsHelpDes, isPortrait }: MapItemProp
     ];
 
     // Function to scale coordinates based on image dimensions
-    const updateCoords = useCallback(() => {
-        if (imgRef.current) {
-            const imgWidth = imgRef.current.width;
-            const imgHeight = imgRef.current.height;
-    
-            const scaleCoords = (originalCoords: number[][], originalSize: { width: number; height: number }) =>
-                originalCoords.map((coord) =>
-                    coord
-                        .map((value, index) =>
-                            index % 2 === 0
-                                ? Math.round((value * imgWidth) / originalSize.width)
-                                : Math.round((value * imgHeight) / originalSize.height)
-                        )
-                        .join(",")
-                );
-    
-            if (isSatView) {
-                setSatScaledCoords(scaleCoords(satOriginalCoords, satOriginalSize));
-            } else {
-                setCustomScaledCoords(scaleCoords(customeOriginalCoords, customeOriginalSize));
-            }
-        }
-    }, [isSatView]);    
-
     useEffect(() => {
+        const updateCoords = () => {
+            if (imgRef.current) {
+                const imgWidth = imgRef.current.width;
+                const imgHeight = imgRef.current.height;
+
+                if (isSatView) {
+                    const newCoords = satOriginalCoords.map((coord) =>
+                        coord.map((value, index) =>
+                            index % 2 === 0
+                                ? Math.round((value * imgWidth) / satOriginalSize.width)
+                                : Math.round((value * imgHeight) / satOriginalSize.height)
+                        ).join(",")
+                    );
+                    setSatScaledCoords(newCoords);
+                } else {
+                    const newCoords = customeOriginalCoords.map((coord) =>
+                        coord.map((value, index) =>
+                            index % 2 === 0
+                                ? Math.round((value * imgWidth) / customeOriginalSize.width)
+                                : Math.round((value * imgHeight) / customeOriginalSize.height)
+                        ).join(",")
+                    );
+                    setCustomScaledCoords(newCoords);
+                }
+            }
+        };
+
         window.addEventListener("resize", updateCoords);
         updateCoords(); // Call on mount
-    
+
         return () => window.removeEventListener("resize", updateCoords);
-    }, [updateCoords]);
+    }, [isSatView]); // Recalculate when the view changes
 
     // Function to handle click on the map area
     const targetFunction = (event: React.MouseEvent, index: number, viewType: string) => {
-        event.preventDefault();
-        setIsHelpDes(true);
-        const helpDesk = helpDeskList.find((desk) => desk.index === index && desk.type === viewType);
-        if (helpDesk) setSelectedHelpDesk(helpDesk.description);
-    };    
+        // Find the corresponding help desk entry based on index and viewType
+        setIsHelpDes(true); // Ensure help desk details are visible
+        const helpDesk = helpDeskList.find(
+            (desk) => desk.index === index && desk.type === viewType
+        );
+
+        // If a corresponding help desk is found, update the state to display its description
+        if (helpDesk) {
+            setSelectedHelpDesk(helpDesk.description);
+        }
+    };
 
     return (
-        <div className="max-h-screen">
+        <div>
             <img
                 ref={imgRef}
-                src={isSatView? "/vansh-map-satview.png" : "/vansh-map-customview.png"}
+                src={isSatView ? "/vansh-map-satview.png" : "/vansh-map-customview.png"}
                 alt={isSatView ? "Satellite View" : "Custom View"}
                 className="w-full"
                 useMap={isSatView ? "#vansh-satview" : "#vansh-customview"}
             />
-
             <map name={isSatView ? "vansh-satview" : "vansh-customview"}>
                 {(isSatView ? satScaledCoords : customScaledCoords).map((coord, index) => (
                     <area
