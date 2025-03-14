@@ -3,6 +3,8 @@
 import {BsCalendar2Event, BsCalendar2EventFill} from "react-icons/bs";
 import { FaRegMap,FaMapMarkedAlt } from "react-icons/fa";
 import { MdPersonSearch } from "react-icons/md";
+import { HugeiconsIcon } from '@hugeicons/react';
+import {Store02Icon} from '@hugeicons/core-free-icons';
 import { CgProfile } from "react-icons/cg";
 import {IoPersonCircleSharp} from "react-icons/io5"
 import Link from "next/link";
@@ -12,11 +14,15 @@ const Footer = () => {
     const pathName=usePathname();
     console.log(pathName)
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-gradient-to-t from-gray-100 to-white shadow-lg py-3">
+        <div className="fixed bottom-0 left-0 w-full bg-gradient-to-t from-gray-100 to-white shadow-lg py-3 pb-5">
             <div className="flex justify-around items-center text-gray-700">
                 <Link href="/dashboard" className="flex flex-col items-center hover:text-black transition">
                     {pathName==="/dashboard/"?<BsCalendar2EventFill fontSize={24} className="text-gray-500"/>:<BsCalendar2Event fontSize={24} className="text-gray-500" />}
                     <p className="text-xs font-medium">Events</p>
+                </Link>
+                <Link href="/dashboard" className="flex flex-col items-center hover:text-black transition">
+                    {pathName==="/dashboard/"?<HugeiconsIcon icon={Store02Icon} color="#000000"/>:<HugeiconsIcon icon={Store02Icon} />}
+                    <p className="text-xs font-medium">Stalls</p>
                 </Link>
                 <Link href="/map" className="flex flex-col items-center hover:text-black transition">
                     {pathName==="/map/"?<FaMapMarkedAlt fontSize={24} className="text-gray-500"/>:<FaRegMap fontSize={24} className="text-gray-500" />}

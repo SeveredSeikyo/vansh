@@ -93,7 +93,7 @@ export default function Home() {
             <Header />
             <main className="flex-1 pt-16 pb-16">
                 {/* Search Bar */}
-                <div className="flex justify-center mb-6 pr-3 pl-3">
+                <div className="flex justify-center mb-4 mt-1 pr-3 pl-3">
                     <div className="flex items-center gap-2 bg-gray-100 border border-gray-300 rounded-full px-4 py-2 w-full max-w-md shadow-sm focus-within:border-gray-500 transition">
                         <FaSearch className="text-gray-500" />
                         <input

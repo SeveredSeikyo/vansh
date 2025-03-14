@@ -14,9 +14,13 @@ export default function BackButtonHandler() {
 
     const setupListener = async () => {
       backButtonListener = await App.addListener("backButton", () => {
-        if (pathname === "/" || pathname==="/dashboard/" || pathname==="/map/" || pathname==="/lost/" || pathname==="/profile/") {
+        if (pathname === "/" || pathname==="/dashboard/") {
           App.exitApp(); // Exit app if on the home page
-        } else {
+        } 
+        if (pathname==="/map/" || pathname==="/lost/" || pathname==="/profile/"){
+          router.replace("/dashboard/")
+        }
+        else {
           router.back(); // Navigate back
         }
       });
