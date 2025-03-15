@@ -12,15 +12,8 @@
 ✅ **Lost and Found** – BLE-based system to update lost and found items.  
 
 ### New Enhancements  
-✨ **Interactive Event Schedule** – Personalized schedules and reminders.  
-✨ **Offline Message Boards** – Local bulletin for notices and info-sharing (BLE sync).  
-✨ **Gamification & Rewards** – Earn points for attending events and redeem rewards.  
-✨ **Augmented Reality (AR) Map** – Virtual signs and overlays for navigation.  
-✨ **Emergency Alerts** – BLE-based urgent notifications to nearby users.  
-✨ **User-generated Content** – Submit photos, reviews, and feedback (BLE sync).  
-✨ **Offline Search & Filters** – Find events easily with advanced search.  
-✨ **Interactive Campus Tour** – Offline guide with audio and facts.  
-✨ **Collaborative Tasks & Challenges** – Team-based challenges updated via BLE.  
+✨ **Interactive Event Schedule** – Personalized schedules and reminders.    
+✨ **Offline Search & Filters** – Find events easily with advanced search.   
 ✨ **Lost Item Claims** – Instant notifications for lost items.  
 
 ---  
