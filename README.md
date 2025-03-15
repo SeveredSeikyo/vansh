@@ -36,7 +36,7 @@ Ensure you have **Node.js** and **Capacitor CLI** installed.
 1. **Clone the repository:**  
    ```sh
    git clone https://github.com/yourusername/vansh-app.git
-   cd vansh-app
+   cd vansh
    ```  
 2. **Install dependencies:**  
    ```sh
