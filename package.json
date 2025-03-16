@@ -23,6 +23,7 @@
     "autoprefixer": "^10.4.21",
     "hammerjs": "^2.0.8",
     "idb": "^8.0.2",
+    "leaflet": "^1.9.4",
     "next": "^15.2.1",
     "photo-sphere-viewer": "^4.8.1",
     "postcss": "^8.5.3",
@@ -30,12 +31,14 @@
     "react-360-view": "^0.1.3",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+    "react-leaflet": "^5.0.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/hammerjs": "^2.0.46",
+    "@types/leaflet": "^1.9.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
