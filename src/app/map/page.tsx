@@ -24,7 +24,7 @@ export default function Map() {
           <div className="absolute top-8 right-6 z-900">
             <button
               onClick={() => setIsSatView(!isSatView)}
-              className="px-4 py-2 rounded-lg shadow-md"
+              className="px-4 py-2 rounded-lg shadow-md bg-white"
             >
               {isSatView ? <IoMapOutline/> : <IoMap/>}
             </button>
