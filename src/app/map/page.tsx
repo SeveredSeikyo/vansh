@@ -17,7 +17,7 @@ export default function Map() {
     <div className="h-[100vh] overflow-hidden">
       <Header />
       <main className="flex-1 pt-16 pb-16 flex justify-center items-center overflow-hidden">
-        <div className="h-[100vh] w-[90vw] px-2 py-5 relative">
+        <div className="h-[100vh] w-[100vw] px-2 py-5 relative">
           <DynamicCollegeMap isSatView={isSatView} />
 
           {/* Toggle Button */}

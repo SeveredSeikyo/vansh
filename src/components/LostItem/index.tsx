@@ -1,6 +1,8 @@
 import { MdAccessTimeFilled } from "react-icons/md";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaTrash } from "react-icons/fa";
+import { getUserDetails } from "@/utils/db";
+import { useState, useEffect} from "react";
 
 type LostItemProps = {
     lostitem: {
@@ -15,6 +17,15 @@ type LostItemProps = {
 };
 
 const LostItem = ({ lostitem, onDelete }: LostItemProps) => {
+    const [profileUser, setProfileUser] = useState<{ name: string; rollNumber: string; branch: string; year: string }|null>(null);
+    console.log(profileUser?.name)
+    useEffect(() => {
+    if (typeof window !== "undefined") {
+        getUserDetails().then((data) => {
+        setProfileUser(data);
+        });
+    }
+    }, []);
     const { name, location, time, status, user, id } = lostitem;
     
     return (
@@ -35,12 +46,14 @@ const LostItem = ({ lostitem, onDelete }: LostItemProps) => {
             </div>
             <div className="flex justify-between items-center mt-3">
                 <p className="text-sm text-gray-500">by {user}</p>
+                { profileUser?.name===name?(
                 <button
                     className="text-red-500"
                     onClick={() => onDelete(id)}
                 >
                     <FaTrash />
-                </button>
+                </button>):null
+                }
             </div>
         </div>
     );

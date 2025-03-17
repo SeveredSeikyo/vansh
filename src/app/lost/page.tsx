@@ -3,8 +3,9 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import LostDetails from "@/components/LostDetails";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { getUserDetails } from "@/utils/db";
 
 export default function Lost() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +13,21 @@ export default function Lost() {
         { id: "1", name: "MacBook Pro", location: "Library", time: "2 hours ago", status: "Lost", user: "John Doe" },
         { id: "2", name: "Student ID Card", location: "Cafeteria", time: "1 hour ago", status: "Found", user: "Jane Smith" },
     ]);
+
+    const [user, setUser] = useState<{ name: string; rollNumber: string; branch: string; year: string } | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+        getUserDetails().then((data) => {
+            setUser(data);
+        });
+        }
+    }, []);
+
+    const [filterLostItems, setFilterLostItems]=useState(lostItems)
+    let filteredLostList=[]
+
+
     const [newItem, setNewItem] = useState({
         name: "",
         location: "",
@@ -27,19 +43,35 @@ export default function Lost() {
         });
     };
 
+    const onFilterLostItems=()=>{
+        filteredLostList=lostItems.filter(item=>item.status==="Lost");
+        setFilterLostItems(filteredLostList)
+    }
+
+    const onFilterFoundItems=()=>{
+        filteredLostList=lostItems.filter(item=>item.status==="Found");
+        setFilterLostItems(filteredLostList);
+    }
+
     const handleAddItem = () => {
         const newItemId = String(lostItems.length + 1);
-        setLostItems([
+        const updatedItems = [
             ...lostItems,
-            { ...newItem, id: newItemId, time: new Date().toLocaleString() },
-        ]);
-        setIsModalOpen(false); // Close modal after submitting
+            { ...newItem, id: newItemId, time: new Date().toLocaleString(), user: user?.name || "Anonymous" },
+        ];
+        setLostItems(updatedItems);
+        setFilterLostItems(updatedItems); 
+        setIsModalOpen(false); 
         setNewItem({ name: "", location: "", status: "Lost", time: "", user: "Anonymous" });
     };
+    
 
     const handleDeleteItem = (id: string) => {
-        setLostItems(lostItems.filter(item => item.id !== id));
+        const updatedItems = lostItems.filter(item => item.id !== id);
+        setLostItems(updatedItems);
+        setFilterLostItems(updatedItems);
     };
+    
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -47,16 +79,16 @@ export default function Lost() {
             <main className="flex-1 pt-16 pb-16 px-4 max-w-3xl mx-auto">
                 {/* Toggle Buttons for Lost & Found */}
                 <div className="flex justify-center gap-4 mb-6">
-                    <button className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition">
+                    <button className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition" onClick={onFilterLostItems}>
                         Lost Items
                     </button>
-                    <button className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition">
+                    <button className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition" onClick={onFilterFoundItems}>
                         Found Items
                     </button>
                 </div>
 
                 {/* Lost & Found Items List */}
-                <LostDetails lostItems={lostItems} onDelete={handleDeleteItem} />
+                <LostDetails lostItems={filterLostItems} onDelete={(id)=>handleDeleteItem(id)} />
 
                 {/* Floating Action Button (FAB) */}
                 <button 
