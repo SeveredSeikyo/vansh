@@ -32,7 +32,9 @@ const LostItem = ({ lostitem, onDelete }: LostItemProps) => {
         <div className="bg-white shadow-md p-4 rounded-lg border border-gray-200">
             <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-semibold">{name}</h3>
-                <span className={`px-3 py-1 text-sm font-medium rounded-full ${status === "Lost" ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
+                <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                    status === "Lost" ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"
+                }`}>
                     {status}
                 </span>
             </div>
@@ -46,14 +48,14 @@ const LostItem = ({ lostitem, onDelete }: LostItemProps) => {
             </div>
             <div className="flex justify-between items-center mt-3">
                 <p className="text-sm text-gray-500">by {user}</p>
-                { profileUser?.name===name?(
-                <button
-                    className="text-red-500"
-                    onClick={() => onDelete(id)}
-                >
-                    <FaTrash />
-                </button>):null
-                }
+                {profileUser?.name === user ? (
+                    <button
+                        className="text-red-500"
+                        onClick={() => onDelete(id)}
+                    >
+                        <FaTrash />
+                    </button>
+                ) : null}
             </div>
         </div>
     );
