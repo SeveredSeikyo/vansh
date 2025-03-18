@@ -18,14 +18,34 @@ interface Props {
   isSatView: boolean;
 }
 
+const locationNames=[
+  "University location",
+  "Vansh Stalls",
+  "Cricket Ground",
+  "Open Air Auditorium and Seminar Hall",
+  "VITS cafeteria",
+  "Vignan Tree",
+  "Vignan Canteen",
+  "Volley Ball Court",
+  "Main Stage Entrance point",
+  "Library Front area"
+]
+
 const MapItem = ({ isSatView }: Props) => {
   const mapRef = useRef<L.Map | null>(null);
 
   const center: LatLngExpression = [17.344167, 78.721544];
   const locations: LatLngExpression[] = [
-    [17.343911, 78.721544],
-    [17.344505, 78.718736],
-    [17.344167, 78.722445],
+    [17.342542, 78.716793],
+    [17.343191, 78.717272],
+    [17.343396, 78.718243],
+    [17.344725,78.721860],
+    [17.343896,78.721549],
+    [17.344351,78.722721],
+    [17.343549,78.723839],
+    [17.343354,78.719422],
+    [17.343736,78.716840],
+    [17.344260,78.722180]
   ];
 
   return (
@@ -64,16 +84,14 @@ const MapItem = ({ isSatView }: Props) => {
       )}
 
       {/* Markers (Persist across views) */}
-      {locations.map((position, idx) => {
-        const [lat, lng] = position as [number, number];
-        return (
-          <Marker key={idx} position={position} icon={customIcon}>
-            <Popup>
-              Location {idx + 1} <br /> {lat}, {lng}
-            </Popup>
-          </Marker>
-        );
-      })}
+      {locations.map((position, idx) => (
+        <Marker key={idx} position={position} icon={customIcon}>
+          <Popup>
+            {locationNames[idx]} {/* Display corresponding location name */}
+            <br />
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 };

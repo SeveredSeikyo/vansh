@@ -2,7 +2,8 @@ import EventItem from "../EventItem";
 
 type EventListProps = {
     eventslist:Array< {
-        id: number;
+        id?: number;
+        eventId: string;
         eventName: string;
         category: string;
         image: string;

@@ -22,7 +22,7 @@ export default function Home() {
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const response = await fetch("/events.json"); // Load JSON from public folder
+        const response = await fetch("/vansh.events.json"); // Load JSON from public folder
         const eventData = await response.json();
         await saveEventsToIndexedDB(eventData); // Save to IndexedDB with auto-incremented ID
         console.log("Events saved in IndexedDB!");

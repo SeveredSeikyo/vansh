@@ -4,6 +4,7 @@ import "./globals.css";
 import BackButtonHandler from "@/components/BackButtonHandler"; // Import the back button handler
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import DataCheck from "@/components/DataCheck";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <DataCheck/>
         <BackButtonHandler /> {/* Add this here */}
         {children}
       </body>
