@@ -4,8 +4,15 @@ import { getUserDetails } from "@/utils/db";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+interface UserProfile {
+  name: string;
+  rollNumber: string;
+  branch: string;
+  year: string;
+}
+
 export default function Profile() {
-  const [user, setUser] = useState<{ name: string; rollNumber: string; branch: string; year: string } | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

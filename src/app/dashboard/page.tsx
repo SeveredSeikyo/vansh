@@ -1,39 +1,31 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Categories from "@/components/Categories";
 import EventsList from "@/components/EventsList";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { FaSearch } from "react-icons/fa";
 import { TbFilterOff, TbFilterFilled } from "react-icons/tb";
-// import {HiOutlineCalendarDays} from "react-icons/hi2";
-// import {BsCalendarDay} from "react-icons/bs";
-// import {FaAngleDown, FaAngleUp} from "react-icons/fa";
+import { getEventDetails } from "@/utils/db";
+import {HashLoader} from 'react-spinners';
 
-// Define the type for an event
-type Event = {
-    id: string;
-    title: string;
-    time: string;
-    day:string,
-    location: string;
+interface Event {
+    eventName: string;
     category: string;
     image: string;
-};
-  
-const events: Event[] = [
-    { id: "1", title: "Tech Innovation Summit 2025", time: "09:00 - 11:30",day:"day1", location: "Anderson Hall", category: "Tech", image: "/tech-innovation.jpg" },
-    { id: "2", title: "Cultural Dance Performance", time: "13:00 - 15:00",day:"day2", location: "Main Auditorium", category: "Concerts", image: "/tech-innovation.jpg" },
-    { id: "3", title: "Startup Pitch Competition", time: "15:30 - 17:30",day:"day1", location: "Business Center", category: "Tech", image: "/tech-innovation.jpg" },
-    { id: "4", title: "AI & Machine Learning Workshop", time: "10:00 - 12:30",day:"day2", location: "Tech Lab 2", category: "Tech", image: "/tech-innovation.jpg" },
-    { id: "5", title: "Music Fest: Indie Night", time: "19:00 - 22:00",day:"day1", location: "Open Air Theater", category: "Concerts", image: "/tech-innovation.jpg" },
-    { id: "6", title: "Cybersecurity Awareness Panel", time: "14:00 - 16:00",day:"day2", location: "Room B102", category: "Tech", image: "/cultural-event.jpg" },
-    { id: "7", title: "Hackathon: Build the Future", time: "08:00 - 20:00",day:"day1", location: "Innovation Hub", category: "Tech", image: "/cultural-event.jpg" },
-    { id: "8", title: "Film Screening: Sci-Fi Classics", time: "18:00 - 21:00",day:"day2", location: "Cinema Hall", category: "Arts", image: "/cultural-event.jpg" },
-    { id: "9", title: "Yoga & Meditation Session", time: "07:00 - 08:30",day:"day1", location: "Wellness Center", category: "Arts", image: "/cultural-event.jpg" },
-    { id: "10", title: "E-Sports Tournament: Valorant", time: "16:00 - 22:00",day:"day2", location: "Gaming Arena", category: "Esports", image: "/cultural-event.jpg" },
-];
+    date: string;
+    timings: string;
+    venue: string;
+    teamSize: string;
+    registrationFee: string;
+    prize: string;
+    facultyCoordinator: string;
+    facultyCoordinatorNo: string;
+    studentCoordinator: string;
+    studentCoordinatorNo: string;
+    day: number[];   
+}
 
 export default function Home() {
     const [currentCategory, setCurrentCategory] = useState("");
@@ -44,12 +36,26 @@ export default function Home() {
     const [isDayOneChecked, setIsDayOneChecked]=useState(true);
     const [isDayTwoChecked, setIsDayTwoChecked]=useState(true);
 
+    const [events, setEvents] = useState<Event[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    
+    useEffect(() => {
+    if (typeof window !== "undefined") {
+        getEventDetails().then((data) => {
+        setEvents(data);
+        setIsLoading(false);
+        });
+    }
+    }, []);
+    
+    
+
     // Function to filter events based on search query and category
     const filterEvents = (events: Event[]) => {
         const query = searchQuery.toLowerCase();
         return events.filter(event => {
-            const matchesQuery = event.title.toLowerCase().includes(query) || event.location.toLowerCase().includes(query);
-            const matchesCategory = currentCategory ? event.category === currentCategory : true;
+            const matchesQuery = event.eventName.toLowerCase().includes(query) || event.venue.toLowerCase().includes(query);
+            const matchesCategory = currentCategory ? event.category === currentCategory?.toLowerCase() : true;
             return matchesQuery && matchesCategory;
         });
     };
@@ -88,8 +94,8 @@ export default function Home() {
 
     // Get filtered events directly in render
     let filteredList:Event[]=[];
-    const dayoneList=events.filter(item=>item.day=="day1");
-    const daytwoList=events.filter(item=>item.day=="day2");
+    const dayoneList=events?.filter(item=>item.day.includes(1))??[];
+    const daytwoList=events?.filter(item=>item.day.includes(2))??[];
 
     if (isDayOneDown){
         filteredList=filterEvents(dayoneList);
@@ -100,7 +106,19 @@ export default function Home() {
     }
 
     if (isDayOneDown&&isDayTwoDown){
-        filteredList=filterEvents(events);
+        filteredList=filterEvents(events??[]);
+    }
+
+    if (isLoading) {
+        return (
+            <div>
+                <Header/>
+                <main className="flex justify-center items-center h-[70vh]">
+                    <HashLoader/>
+                </main>
+                <Footer/>
+            </div>
+        );
     }
 
     return (

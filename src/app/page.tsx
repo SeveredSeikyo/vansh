@@ -1,9 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { saveUserDetails, getUserDetails } from "@/utils/db";
+import { saveUserDetails, getUserDetails, saveEventsToIndexedDB, saveStallsToIndexedDB } from "@/utils/db";
 import { PiStudentFill, PiChalkboardTeacherFill } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
+
 
 export default function Home() {
   const [showStudent, setShowStudent]=useState(false)
@@ -17,6 +18,33 @@ export default function Home() {
     year: "",
   });
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        const response = await fetch("/events.json"); // Load JSON from public folder
+        const eventData = await response.json();
+        await saveEventsToIndexedDB(eventData); // Save to IndexedDB with auto-incremented ID
+        console.log("Events saved in IndexedDB!");
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    const loadStalls = async () => {
+      try {
+        const response = await fetch("/stalls.json"); // Load JSON from public folder
+        const stallData = await response.json();
+        await saveStallsToIndexedDB(stallData); // Save to IndexedDB with auto-incremented ID
+        console.log("Stalls saved in IndexedDB!");
+      } catch (error) {
+        console.error("Error fetching stalls:", error);
+      }
+    };
+  
+    loadEvents();
+    loadStalls();
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -33,6 +61,7 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
 
   const onChangeStudent=()=>{
     setShowStudent((prev)=>!prev)
