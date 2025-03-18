@@ -1,4 +1,5 @@
 import CategoryItem from "../CategoryItem";
+import Slider from 'react-slick';
 
 const categories = [
     { id: "1", name: "Concerts", icon: "/concerts-icon.jpg" },
@@ -10,28 +11,40 @@ const categories = [
     { id: "7", name: "Literary", icon: "/literary.jpg" },
 ];
 
-type CategoryProps={
+type CategoryProps = {
     onCategorySelect: (category: string) => void;
     currentCategory: string;
-    clearSelection:()=>void;
-}
+    clearSelection: () => void;
+};
 
-// Categories Component
-const Categories = ({ onCategorySelect,currentCategory,clearSelection }: CategoryProps) => {
+const settings = {
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 4,
+    swipeToSlide: true,
+    arrows: false, 
+    afterChange: (index: number) => {
+        console.log(`Slider changed to: ${index + 1}`);
+    },
+};
+
+const Categories = ({ onCategorySelect, currentCategory, clearSelection }: CategoryProps) => {
     return (
-        <div className="flex justify-around overflow-auto">
-            {categories.map((item) => (
-                <CategoryItem
-                    key={item.id}
-                    categoryitem={item}
-                    currentCategory={currentCategory}
-                    clearSelection={clearSelection}
-                    onCategorySelect={onCategorySelect}  // Pass the callback
-                />
-            ))}
+        <div className="slider-container">
+            <Slider {...settings}>
+                {categories.map((item) => (
+                    <div key={item.id}> {/* Each item should be a direct child of Slider */}
+                        <CategoryItem
+                            categoryitem={item}
+                            currentCategory={currentCategory}
+                            clearSelection={clearSelection}
+                            onCategorySelect={onCategorySelect}
+                        />
+                    </div>
+                ))}
+            </Slider>
         </div>
     );
 };
 
 export default Categories;
-
