@@ -11,6 +11,7 @@ import { getEventDetails } from "@/utils/db";
 import {HashLoader} from 'react-spinners';
 
 interface Event {
+    id: number;
     eventName: string;
     category: string;
     image: string;

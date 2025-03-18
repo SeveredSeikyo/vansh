@@ -6,6 +6,7 @@ const EVENT_STORE_NAME = "events";
 const STALL_STORE_NAME = "stalls";
 
 interface Event {
+  id: number;
   eventName: string;
   category: string;
   image: string;
@@ -23,7 +24,7 @@ interface Event {
 }
 
 interface Stall{
-  auctionName: string
+  auctionName: string;
 }
 
 // Ensure IndexedDB is only accessed in the browser
@@ -46,7 +47,7 @@ const dbPromise = typeof window !== "undefined"
 
   
 // Function to save events individually with auto-incrementing IDs
-export const saveEventsToIndexedDB = async (events: any[]) => {
+export const saveEventsToIndexedDB = async (events: []) => {
   if (!dbPromise) return;
   const db = await dbPromise;
   const tx = db.transaction(EVENT_STORE_NAME, "readwrite");
@@ -61,7 +62,7 @@ export const saveEventsToIndexedDB = async (events: any[]) => {
 };
 
 //save stalls
-export const saveStallsToIndexedDB = async (stalls: any[]) => {
+export const saveStallsToIndexedDB = async (stalls: []) => {
   if (!dbPromise) return;
   const db = await dbPromise;
   const tx = db.transaction(STALL_STORE_NAME, "readwrite");
@@ -117,4 +118,16 @@ export const getEventDetails = async (): Promise<Event[]> => {
 
   const events = await store.getAll(); // ✅ Fetch all events
   return events || [];
+};
+
+//Get Stalls Details
+export const getStallDetails = async (): Promise<Stall[]> => {
+  if (!dbPromise) return [];
+
+  const db = await dbPromise;
+  const tx = db.transaction(STALL_STORE_NAME, "readonly");
+  const store = tx.objectStore(STALL_STORE_NAME);
+
+  const stalls = await store.getAll(); // ✅ Fetch all events
+  return stalls || [];
 };

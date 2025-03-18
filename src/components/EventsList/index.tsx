@@ -1,13 +1,22 @@
 import EventItem from "../EventItem";
 
 type EventListProps = {
-    eventslist: Array<{
-        id: string;
-        title: string;
-        time: string;
-        day:string,
-        location: string;
+    eventslist:Array< {
+        id: number;
+        eventName: string;
+        category: string;
         image: string;
+        date: string;
+        timings: string;
+        venue: string;
+        teamSize: string;
+        registrationFee: string;
+        prize: string;
+        facultyCoordinator: string;
+        facultyCoordinatorNo: string;
+        studentCoordinator: string;
+        studentCoordinatorNo: string;
+        day: number[];   
     }>;
 };
 
