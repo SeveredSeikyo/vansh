@@ -278,7 +278,7 @@
     "date": "21/3/2025",
     "timings": "9:30AM-2:30PM",
     "venue": "Seminar Hall 5th Floor",
-    "teamSize": "",
+    "teamSize": "1",
     "registrationFee": "",
     "prize": "",
     "facultyCoordinator": "",
@@ -514,7 +514,7 @@
   {
     "eventName": "AI Arena",
     "category": "tech",
-    "image": "/ai.png",
+    "image": "/arena.png",
     "date": "20 & 21/3/2025",
     "timings": "11:00AM-3:00PM",
     "venue": "417 & 419",
@@ -526,6 +526,22 @@
     "studentCoordinator": "Mr. Lakshman",
     "studentCoordinatorNo": "7569127836",
     "day":[1,2]
+  },
+  {
+    "eventName": "Escape the AI Lab",
+    "category": "tech",
+    "image": "/ailab.png",
+    "date": "20 & 21/3/2025",
+    "timings": "10:00AM-12:00PM",
+    "venue": "417",
+    "teamSize": "1",
+    "registrationFee": "100",
+    "prize": "",
+    "facultyCoordinator": "",
+    "facultyCoordinatorNo": "",
+    "studentCoordinator": "",
+    "studentCoordinatorNo": "",
+    "day": [1,2]
   },
   {
     "eventName": "Game Zone - BGMI & Free Fire",
