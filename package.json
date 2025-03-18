@@ -27,6 +27,7 @@
     "idb": "^8.0.2",
     "leaflet": "^1.9.4",
     "next": "^15.2.1",
+    "next-pwa": "^5.6.0",
     "photo-sphere-viewer": "^4.8.1",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
