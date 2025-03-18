@@ -146,7 +146,7 @@
   {
     "eventName": "Chief Guest Speech and Inauguration",
     "category": "spolight",
-    "image": "",
+    "image": "/conference.png",
     "date": "20 & 21/3/2025",
     "timings": "10:00AM-10:30AM",
     "venue": "Open Air Auditorium",
@@ -178,7 +178,7 @@
   {
     "eventName": "Music Band Competition",
     "category": "concerts",
-    "image": "/rock.png",
+    "image": "/rock.jpg",
     "date": "20/3/2025",
     "timings": "1:00PM-4:30PM",
     "venue": "Open Air Auditorium",
@@ -194,7 +194,7 @@
   {
     "eventName": "Crowd Pulling and Gathering",
     "category": "spotlight",
-    "image": "",
+    "image": "/gathering.png",
     "date": "20 & 21/3/2025",
     "timings": "5:00PM-6:00PM",
     "venue": "Main Stage (Cricket Ground)",
@@ -210,7 +210,7 @@
   {
     "eventName": "Chief Guest Speech",
     "category": "spotlight",
-    "image": "",
+    "image": "/chief.png",
     "date": "20/3/2025-6:15PM-6:45PM 21/3/2025-5:40PM-6:00PM",
     "timings": "",
     "venue": "Main Stage (Cricket Ground)",
