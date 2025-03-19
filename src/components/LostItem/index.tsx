@@ -7,11 +7,13 @@ import { useState, useEffect} from "react";
 type LostItemProps = {
     lostitem: {
         id: string;
+        itemId: string;
         name: string;
         location: string;
         time: string;
         status: string;
         user: string;
+        action: string;
     };
     onDelete: (id: string) => void;
 };
@@ -33,9 +35,9 @@ const LostItem = ({ lostitem, onDelete }: LostItemProps) => {
             <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-semibold">{name}</h3>
                 <span className={`px-3 py-1 text-sm font-medium rounded-full ${
-                    status === "Lost" ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"
+                    status === "0" ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"
                 }`}>
-                    {status}
+                    {status==="0"?"Lost":"Found"}
                 </span>
             </div>
             <div className="flex items-center gap-2 text-gray-600">

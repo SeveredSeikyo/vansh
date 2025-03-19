@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import BackButtonHandler from "@/components/BackButtonHandler"; // Import the back button handler
+import BackButtonHandler from "@/components/BackButtonHandler";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import DataCheck from "@/components/DataCheck";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,11 +25,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <DataCheck/>
-        <BackButtonHandler /> {/* Add this here */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <DataCheck />
+        <BackButtonHandler />
         {children}
       </body>
     </html>

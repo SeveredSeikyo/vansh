@@ -2,11 +2,13 @@ import LostItem from "../LostItem";
 
 type LostItemType = {
     id: string;
+    itemId: string;
     name: string;
     location: string;
     time: string;
     status: string;
     user: string;
+    action: string;
 };
 
 type LostDetailsProps = {
