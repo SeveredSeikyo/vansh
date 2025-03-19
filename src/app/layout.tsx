@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import DataCheck from "@/components/DataCheck";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration"; // New component
+import Update from "./update";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
         <BackButtonHandler />
         <ServiceWorkerRegistration /> {/* Add the service worker component */}
         {children}
+        <Update/>
       </body>
     </html>
   );
