@@ -172,17 +172,25 @@ export const getStallDetails = async (): Promise<Stall[]> => {
 };
 
 export const getEventById = async (eventId: string): Promise<Event | null> => {
-  if (!dbPromise) return null;
+  if (!dbPromise) {
+    console.error("Database is not initialized");
+    return null;
+  }
+
   try {
     const db = await dbPromise;
     const tx = db.transaction(EVENT_STORE_NAME, "readonly");
     const store = tx.objectStore(EVENT_STORE_NAME);
-    const event = await store.get(eventId);
-    console.log(`event: ${event}`);
-    await tx.done;
+
+    // Get all events and filter
+    const allEvents: Event[] = await store.getAll();
+    const event = allEvents.find(event => event.eventId === eventId);
+
+    console.log("Fetched event:", event); // Debugging log
+
     return event || null;
   } catch (error) {
-    console.error(`Error fetching event with id ${eventId}:`, error);
+    console.error(`Error fetching event with eventId ${eventId}:`, error);
     return null;
   }
 };
