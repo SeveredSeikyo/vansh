@@ -1,0 +1,20 @@
+{
+    "name": "Vansh App",
+    "short_name": "Vansh",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "/vansh-logo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/vansh-logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }

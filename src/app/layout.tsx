@@ -5,6 +5,8 @@ import BackButtonHandler from "@/components/BackButtonHandler";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import DataCheck from "@/components/DataCheck";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration"; // New component
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,9 +27,20 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        {/* PWA Meta Tags */}
+        <meta name="theme-color" content="#000000" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <DataCheck />
         <BackButtonHandler />
+        <ServiceWorkerRegistration /> {/* Add the service worker component */}
         {children}
       </body>
     </html>

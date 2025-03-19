@@ -36,7 +36,7 @@ export class VersionChecker {
   static async checkForUpdates(): Promise<VersionInfo | null> {
     try {
       const currentVersion = await this.getCurrentVersion();
-      const response = await fetch('https://your-api-endpoint.com/version.json');
+      const response = await fetch('https://github.com/Imabhinavvv/vansh/releases/download/version/version.json');
       const remoteVersion: VersionInfo = await response.json();
 
       if (this.compareVersions(currentVersion, remoteVersion.version)) {

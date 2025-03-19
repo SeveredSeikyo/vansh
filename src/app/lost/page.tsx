@@ -6,6 +6,10 @@ import { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { getAllItems, getUserDetails, saveItem, deleteItem, Item } from "@/utils/db";
 import { v4 as uuidv4 } from "uuid";
+import { registerPlugin, PluginListenerHandle } from "@capacitor/core";
+import { NearbyConnectionsPlugin } from "@/types/NearbyConnection";
+
+const NearbyConnections = registerPlugin<NearbyConnectionsPlugin>("NearbyConnections");
 
 export default function Lost() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +46,7 @@ export default function Lost() {
 
   useEffect(() => {
     fetchItems();
-    const interval = setInterval(fetchItems, 10 * 1000); // Check every 10 seconds for updates
+    const interval = setInterval(fetchItems, 10 * 1000); // Check every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -52,13 +56,55 @@ export default function Lost() {
       for (const item of itemsToDelete) {
         await deleteItem(item.id);
       }
-      fetchItems(); // Refresh after cleanup
+      fetchItems();
     };
-
     const interval = setInterval(cleanupDeletedItems, 30 * 60 * 1000); // 30 minutes
     return () => clearInterval(interval);
   }, [lostItems]);
 
+  // Nearby Connections setup
+  useEffect(() => {
+    let listener: PluginListenerHandle | undefined;
+  
+    async function initializeNearby() {
+      try {
+        console.log("Starting Discovery...");
+        await NearbyConnections.startDiscovery();
+        console.log("Discovery started!");
+  
+        console.log("Starting Advertising...");
+        await NearbyConnections.startAdvertising();
+        console.log("Advertising started!");
+  
+        listener = await NearbyConnections.addListener("onDataReceived", async (event) => {
+          const data: Item = JSON.parse(event.data);
+          console.log("Received Item:", data);
+          const existingItems = await getAllItems();
+          const itemExists = existingItems.some((item) => item.itemId === data.itemId);
+  
+          if (!itemExists) {
+            await saveItem(data);
+            console.log("Received item saved:", data);
+            fetchItems();
+          } else {
+            console.log(`Item with itemId '${data.itemId}' already exists, skipping.`);
+          }
+        });
+      } catch (error) {
+        console.error("Error initializing Nearby Connections:", error);
+      }
+    }
+  
+    initializeNearby();
+  
+    return () => {
+      if (listener) {
+        listener.remove();
+      }
+      NearbyConnections.stopDiscovery();
+      NearbyConnections.stopAdvertising();
+    };
+  }, []);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setNewItem({ ...newItem, [e.target.name]: e.target.value });
   };
@@ -71,6 +117,15 @@ export default function Lost() {
   const onFilterFoundItems = () => {
     const filteredLostList = lostItems.filter((item) => item.status === "1" && item.action === "CREATE");
     setFilterLostItems(filteredLostList);
+  };
+
+  const transmitItem = async (item: Item) => {
+    try {
+      await NearbyConnections.sendData({ data: JSON.stringify(item) });
+      console.log(`Transmitted item: ${item.itemId}`);
+    } catch (error) {
+      console.error("Error transmitting item:", error);
+    }
   };
 
   const handleAddItem = async () => {
@@ -88,7 +143,7 @@ export default function Lost() {
     };
 
     await saveItem(newItemWithId);
-    fetchItems(); // Refresh list
+    fetchItems();
     setLfItem(newItemWithId);
     setIsModalOpen(false);
     setNewItem({
@@ -102,6 +157,9 @@ export default function Lost() {
       action: "CREATE",
       synced: false,
     });
+
+    // Transmit the new item to other devices
+    await transmitItem(newItemWithId);
   };
 
   const handleDeleteItem = async (id: string) => {
@@ -109,10 +167,14 @@ export default function Lost() {
     if (itemToDelete) {
       const updatedItem: Item = { ...itemToDelete, action: "DELETE", synced: false };
       await saveItem(updatedItem);
-      fetchItems(); // Refresh list
+      fetchItems();
       setLfItem(updatedItem);
+
+      // Transmit the deleted item to other devices
+      await transmitItem(updatedItem);
     }
   };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />

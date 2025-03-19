@@ -1,5 +1,6 @@
 package com.vignanits.vansh;
 
+import com.vignanits.vansh.NearbyConnectionsPlugin;
 import android.os.Bundle;
 import android.view.View;
 import com.getcapacitor.BridgeActivity;
@@ -8,6 +9,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerPlugin(NearbyConnectionsPlugin.class)
         enableImmersiveMode();
     }
 
