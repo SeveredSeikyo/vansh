@@ -9,7 +9,7 @@ import { FaSearch } from "react-icons/fa";
 import { TbFilterOff, TbFilterFilled } from "react-icons/tb";
 import { getEventDetails } from "@/utils/db";
 import { HashLoader } from "react-spinners";
-
+import StickyComponent from "@/components/StickyComponent";
 interface Event {
     id?: number;
     eventId: string;
@@ -197,6 +197,7 @@ export default function Home() {
                     </div>
                 )}
             </main>
+            <StickyComponent/>
             <Footer />
         </div>
     );

@@ -4,6 +4,7 @@ import { getUserDetails } from "@/utils/db";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CgProfile } from "react-icons/cg"; // Import User Icon
+import StickyComponent from "@/components/StickyComponent";
 
 interface UserProfile {
   name: string;
@@ -66,6 +67,7 @@ export default function Profile() {
           </div> */}
         </div>
       </main>
+      <StickyComponent/>
       <Footer />
     </div>
   );

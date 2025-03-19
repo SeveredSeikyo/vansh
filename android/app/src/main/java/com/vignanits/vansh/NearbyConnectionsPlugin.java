@@ -26,9 +26,14 @@ public class NearbyConnectionsPlugin extends Plugin {
 
     @PluginMethod
     public void startAdvertising(PluginCall call) {
+        if (!hasRequiredPermissions()) {
+            call.getData().put("originalMethod", "startAdvertising");
+            requestPermissions(call);
+            return;
+        }
         try {
             connectionsClient.startAdvertising(
-                "UserDevice", // Display name for the device
+                "UserDevice",
                 SERVICE_ID,
                 connectionLifecycleCallback,
                 new AdvertisingOptions.Builder().setStrategy(STRATEGY).build()
@@ -43,10 +48,15 @@ public class NearbyConnectionsPlugin extends Plugin {
             Log.e("NearbyConnections", "Exception in startAdvertising: " + e.getMessage());
             call.reject("Exception: " + e.getMessage());
         }
-    }
+    };
 
     @PluginMethod
     public void startDiscovery(PluginCall call) {
+        if (!hasRequiredPermissions()) {
+            call.getData().put("originalMethod", "startDiscovery");
+            requestPermissions(call);
+            return;
+        }
         try {
             connectionsClient.startDiscovery(
                 SERVICE_ID,
@@ -63,7 +73,7 @@ public class NearbyConnectionsPlugin extends Plugin {
             Log.e("NearbyConnections", "Exception in startDiscovery: " + e.getMessage());
             call.reject("Exception: " + e.getMessage());
         }
-    }
+    };
 
     @PluginMethod
     public void stopAdvertising(PluginCall call) {
@@ -103,7 +113,46 @@ public class NearbyConnectionsPlugin extends Plugin {
         }
         call.resolve();
     }
-
+    @Override
+    public boolean hasRequiredPermissions() {
+        String[] permissions = {
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.BLUETOOTH_SCAN",
+            "android.permission.BLUETOOTH_ADVERTISE",
+            "android.permission.BLUETOOTH_CONNECT"
+        };
+        for (String permission : permissions) {
+            if (getContext().checkSelfPermission(permission) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    };
+    @Override
+    public void requestPermissions(PluginCall call) {
+        String[] permissions = {
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.BLUETOOTH_SCAN",
+            "android.permission.BLUETOOTH_ADVERTISE",
+            "android.permission.BLUETOOTH_CONNECT"
+        };
+        requestPermissionForAliases(permissions, call, "permissionCallback");
+    };
+    @PluginMethod
+    public void permissionCallback(PluginCall call) {
+        if (hasRequiredPermissions()) {
+            String originalMethod = call.getString("originalMethod", "");
+            if ("startAdvertising".equals(originalMethod)) {
+                startAdvertising(call);
+            } else if ("startDiscovery".equals(originalMethod)) {
+                startDiscovery(call);
+            } else {
+                call.resolve(); // Default success if no original method
+            }
+        } else {
+            call.reject("Required permissions not granted");
+        }
+    };
     private final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
         @Override
         public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo info) {

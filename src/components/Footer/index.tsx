@@ -2,7 +2,6 @@
 
 import {BsCalendar2Event, BsCalendar2EventFill} from "react-icons/bs";
 import { FaRegMap,FaMapMarkedAlt } from "react-icons/fa";
-import { MdPersonSearch, MdOutlinePersonSearch } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import {IoPersonCircleSharp, IoStorefront, IoStorefrontOutline} from "react-icons/io5"
 import Link from "next/link";
@@ -25,10 +24,6 @@ const Footer = () => {
                 <Link href="/map" className="flex flex-col items-center hover:text-black transition">
                     {pathName==="/map/"?<FaMapMarkedAlt fontSize={24} className="text-gray-500"/>:<FaRegMap fontSize={24} className="text-gray-500" />}
                     <p className="text-xs font-medium">Map</p>
-                </Link>
-                <Link href="/lost" className="flex flex-col items-center hover:text-black transition">
-                    {pathName==="/lost/"?<MdPersonSearch fontSize={24} className="text-gray-500" />:<MdOutlinePersonSearch fontSize={24} className="text-gray-500"/>}
-                    <p className="text-xs font-medium">Lost & Found</p>
                 </Link>
                 <Link href="/profile" className="flex flex-col items-center hover:text-black transition">
                     {pathName==="/profile/"?<IoPersonCircleSharp fontSize={24} className="text-gray-500"/>:<CgProfile fontSize={24} className="text-gray-500" />}

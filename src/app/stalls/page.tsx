@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
+import StickyComponent from "@/components/StickyComponent";
 import { getStallDetails } from "@/utils/db";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
@@ -57,6 +58,7 @@ export default function Stalls() {
                     )}
                 </div>
             </main>
+            <StickyComponent/>
             <Footer />
         </div>
     );

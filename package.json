@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "sync": "npx cap sync",
-    "android": "next build && next export && npx cap sync android && npx cap open android"
+    "android": "next build && npx cap sync android && npx cap open android",
+    "debug": "next build && npx cap sync && npx cap run android"
   },
   "dependencies": {
     "@capacitor-community/bluetooth-le": "^7.0.0",
@@ -23,6 +24,7 @@
     "@hugeicons/core-free-icons": "^1.0.13",
     "@hugeicons/react": "^1.0.4",
     "@ionic/react": "^8.5.0",
+    "@ionic/react-router": "^8.5.0",
     "@next/font": "^14.2.15",
     "@photo-sphere-viewer/core": "^5.12.1",
     "@react-native-community/cli": "latest",

@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import StickyComponent from "@/components/StickyComponent";
 
 const DynamicCollegeMap = dynamic(() => import("@/components/MapItem"), {
   ssr: false,
@@ -31,6 +32,7 @@ export default function Map() {
           </div>
         </div>
       </main>
+      <StickyComponent/>
       <Footer />
     </div>
   );

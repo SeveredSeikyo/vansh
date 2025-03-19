@@ -32,6 +32,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import eventsData from "@/data/vansh.events.json";
 import EventDetailClient from "./EventDetailClient";
+import StickyComponent from "@/components/StickyComponent";
 //import type { PageProps } from "next";
 
 // ✅ Define type for params
@@ -56,6 +57,7 @@ export default async function EventDetail({ params }: { params: Promise<{ eventI
       <main className="flex-1 pt-16 pb-16">
         <EventDetailClient eventId={eventId} />
       </main>
+      <StickyComponent/>
       <Footer />
     </div>
   );
