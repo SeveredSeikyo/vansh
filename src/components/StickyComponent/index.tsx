@@ -1,11 +1,23 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
+import { RxCross1 } from "react-icons/rx";
 
 const StickyComponent = () => {
-  return (
-    <div className="fixed bottom-16 right-4 bg-white text-gray-800 py-1 px-3 rounded-lg shadow-md z-50">
-      Developed By <strong>AI&DS 3rd Year</strong>
-    </div>
-  );
+    const [classname, setClassname]=useState("flex");
+
+    const handleClose=()=>{
+        setClassname("hidden")
+    }
+    return (
+        <div id="bottom-banner" className={`fixed bottom-16 start-0 z-50 ${classname} justify-between w-full p-4 border-t border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600`}>
+            <div>
+                <p>Developed By 3rd Year, AI&DS</p>
+            </div>
+            <div onClick={handleClose}>
+                <RxCross1/>
+            </div>
+        </div>
+    );
 };
 
 export default StickyComponent;

@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import DataCheck from "@/components/DataCheck";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration"; // New component
 import Update from "./update";
+import "@ionic/react/css/core.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
