@@ -1,0 +1,6 @@
+{
+    "appId": "com.vansh.app",
+    "appName": "Vansh",
+    "webDir": "out",
+    "bundledWebRuntime": false
+}
