@@ -42,8 +42,9 @@ export default function RootLayout({
         <DataCheck />
         <BackButtonHandler />
         <ServiceWorkerRegistration /> {/* Add the service worker component */}
-        {children}
         <Update/>
+        {children}
+        
       </body>
     </html>
   );

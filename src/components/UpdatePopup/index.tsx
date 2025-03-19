@@ -14,23 +14,25 @@ const UpdatePopup=({ versionInfo, onDismiss }:UpdatePopupProps) => {
   };
 
   return (
-    <IonAlert
-      isOpen={true}
-      header="Update Available"
-      message={`A new version (${versionInfo.version}) is available!\n\nRelease Notes:\n${versionInfo.releaseNotes}`}
-      buttons={[
-        {
-          text: 'Later',
-          role: 'cancel',
-          handler: onDismiss,
-        },
-        {
-          text: 'Update',
-          handler: handleUpdate,
-        },
-      ]}
-      onDidDismiss={onDismiss}
-    />
+    <div className='flex min-h-screen justify-center items-center'>
+      <IonAlert
+        isOpen={true}
+        header="Update Available"
+        message={`A new version (${versionInfo.version}) is available!\n\nRelease Notes:\n${versionInfo.releaseNotes}`}
+        buttons={[
+          {
+            text: 'Later',
+            role: 'cancel',
+            handler: onDismiss,
+          },
+          {
+            text: 'Update',
+            handler: handleUpdate,
+          },
+        ]}
+        onDidDismiss={onDismiss}
+      />
+    </div>
   );
 };
 
