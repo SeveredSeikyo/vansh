@@ -1,7 +1,11 @@
 package com.vignanits.vansh;
 
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.getcapacitor.*;
+import com.getcapacitor.annotation.CapacitorPlugin;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.*;
 import java.util.ArrayList;
@@ -93,12 +97,8 @@ public class NearbyConnectionsPlugin extends Plugin {
 
             for (String endpointId : connectedEndpoints) {
                 connectionsClient.sendPayload(endpointId, payload)
-                    .addOnSuccessListener(aVoid -> {
-                        Log.d("NearbyConnections", "Data sent to " + endpointId);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("NearbyConnections", "Failed to send data to " + endpointId + ": " + e.getMessage());
-                    });
+                    .addOnSuccessListener(aVoid -> Log.d("NearbyConnections", "Data sent to " + endpointId))
+                    .addOnFailureListener(e -> Log.e("NearbyConnections", "Failed to send data to " + endpointId + ": " + e.getMessage()));
             }
         }
         call.resolve();
@@ -106,7 +106,7 @@ public class NearbyConnectionsPlugin extends Plugin {
 
     private final EndpointDiscoveryCallback endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
         @Override
-        public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
+        public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo info) {
             Log.d("NearbyConnections", "Endpoint found: " + endpointId);
             connectionsClient.requestConnection("UserDevice", endpointId, connectionLifecycleCallback)
                 .addOnSuccessListener(aVoid -> Log.d("NearbyConnections", "Connection requested to " + endpointId))
@@ -114,14 +114,14 @@ public class NearbyConnectionsPlugin extends Plugin {
         }
 
         @Override
-        public void onEndpointLost(String endpointId) {
+        public void onEndpointLost(@NonNull String endpointId) {
             Log.d("NearbyConnections", "Endpoint lost: " + endpointId);
         }
     };
 
     private final ConnectionLifecycleCallback connectionLifecycleCallback = new ConnectionLifecycleCallback() {
         @Override
-        public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
+        public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
             Log.d("NearbyConnections", "Connection initiated with " + endpointId);
             connectionsClient.acceptConnection(endpointId, payloadCallback)
                 .addOnSuccessListener(aVoid -> Log.d("NearbyConnections", "Connection accepted with " + endpointId))
@@ -129,7 +129,7 @@ public class NearbyConnectionsPlugin extends Plugin {
         }
 
         @Override
-        public void onConnectionResult(String endpointId, ConnectionResolution resolution) {
+        public void onConnectionResult(@NonNull String endpointId, ConnectionResolution resolution) {
             if (resolution.getStatus().isSuccess()) {
                 Log.d("NearbyConnections", "Connected to " + endpointId);
                 synchronized (connectedEndpoints) {
@@ -141,7 +141,7 @@ public class NearbyConnectionsPlugin extends Plugin {
         }
 
         @Override
-        public void onDisconnected(String endpointId) {
+        public void onDisconnected(@NonNull String endpointId) {
             Log.d("NearbyConnections", "Disconnected from " + endpointId);
             synchronized (connectedEndpoints) {
                 connectedEndpoints.remove(endpointId);
@@ -151,7 +151,7 @@ public class NearbyConnectionsPlugin extends Plugin {
 
     private final PayloadCallback payloadCallback = new PayloadCallback() {
         @Override
-        public void onPayloadReceived(String endpointId, Payload payload) {
+        public void onPayloadReceived(@NonNull String endpointId, Payload payload) {
             byte[] bytes = payload.asBytes();
             if (bytes != null) {
                 String receivedData = new String(bytes);
@@ -166,7 +166,7 @@ public class NearbyConnectionsPlugin extends Plugin {
         }
 
         @Override
-        public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
+        public void onPayloadTransferUpdate(@NonNull String endpointId, PayloadTransferUpdate update) {
             Log.d("NearbyConnections", "Payload transfer update for " + endpointId + ": " + update.getStatus());
         }
     };
