@@ -178,6 +178,7 @@ export const getEventById = async (eventId: string): Promise<Event | null> => {
     const tx = db.transaction(EVENT_STORE_NAME, "readonly");
     const store = tx.objectStore(EVENT_STORE_NAME);
     const event = await store.get(eventId);
+    console.log(`event: ${event}`);
     await tx.done;
     return event || null;
   } catch (error) {
